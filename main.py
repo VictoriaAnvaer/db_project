@@ -55,4 +55,11 @@ user_type = input("Are you a teacher(t) or student(s)? ")
 get_schedule(user_type)
 
 # calculate student grade
-# SELECT (SUM(grade)/COUNT(grade)), assignment_type_id, course_id FROM (SELECT grade, assignment_type_id, course_id FROM student_grades INNER JOIN assignments as u ON u.assignment_id=student_grades.assignment_id WHERE student_id=(5)) as u GROUP BY assignment_type_id, course_id;
+#CALL get_avg(student_id, period)
+#avg | assignment_type_id | period | course_type_id
+
+# teacher assignment
+#CALL get_assignments(course_id)
+# assignment_id | assignment_name
+#CALL get_assignments_grade(assignment_id)
+# student_id | name | grade

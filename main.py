@@ -41,18 +41,51 @@ def get_schedule(type_u):
 
 
 def get_stud_schedule():
-    stud_id = input("Enter student ID: ")
-    return execute_query(get_db_connection(), "CALL select_student_schedule (" + stud_id + ");")
+    return execute_query(get_db_connection(), "CALL select_student_schedule (" + user_id + ");")
 
 
 def get_teach_schedule():
-    teach_id = input("Enter teacher ID: ")
-    return execute_query(get_db_connection(), "CALL select_teacher_schedule (" + teach_id + ");")
+    return execute_query(get_db_connection(), "CALL select_teacher_schedule (" + user_id + ");")
+
+
+def get_grades():
+    total = 0.0
+    for i in range(1, 11):
+        grade = calc_grade(i)[0]
+        if calc_grade(i)[1]:
+            print(grade)
+            grade = grade
+            print(grade)
+        total += grade
+    return total/10
+def calc_grade(period):
+    ap=False
+    results = execute_query(get_db_connection(), "CALL get_avg (" + user_id + ", " + str(period) + ");")
+    if results[0][3] == 2:
+        ap=True
+    return (float(results[0][0]) * 0.3) + (float(results[1][0]) * 0.7), ap
 
 
 user_type = input("Are you a teacher(t) or student(s)? ")
-
-get_schedule(user_type)
+user_id = input("What is your ID? ")
+option = 99
+if user_type == "s":
+    while option != 0:
+        print("1. View Schedule")
+        print("2. View grades")
+        print("0. Quit")
+        option = int(input("Select a number: "))
+        if option == 1:
+            get_schedule(user_type)
+        elif option == 2:
+            print("1. Specific period")
+            print("2. Overall average")
+            option = int(input("Select a number: "))
+            if option == 1:
+                option = input("Enter period: ")
+                print(f"period {option}: {calc_grade(option)[0]}")
+            elif option == 2:
+                print(f"Overall average: {get_grades()}")
 
 # calculate student grade
 #CALL get_avg(student_id, period)

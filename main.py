@@ -1,6 +1,6 @@
 import mysql.connector
 
-
+#Part 1 done only
 def get_db_connection():
     connection = mysql.connector.connect(user='victoriaa127',
                                          password='230826075',
@@ -66,6 +66,20 @@ def calc_grade(period):
     return (float(results[0][0]) * 0.3) + (float(results[1][0]) * 0.7), ap
 
 
+def show_assignment():
+    results = execute_query(get_db_connection(), "SELECT * FROM show_class_id")
+    print("teacher_name   course_id   course_name")
+    for row in results:
+        print(f"{row[0]} -         {row[1]} - {row[2]}")
+    course_id = input("Select a course ID: ")
+    assignments = execute_query(get_db_connection(), "CALL get_assignments(" + course_id + ");")
+    for row in assignments:
+        print(f"{row[0]} - {row[1]}")
+    assignment_id= input("Select an assignment ID: ")
+    grades = execute_query(get_db_connection(), "CALL get_assignments_grade(" + assignment_id + ");")
+    for row in grades:
+        print(f"{row[1]}   - {row[2]}")
+
 user_type = input("Are you a teacher(t) or student(s)? ")
 user_id = input("What is your ID? ")
 option = 99
@@ -86,10 +100,18 @@ if user_type == "s":
                 print(f"period {option}: {calc_grade(option)[0]}")
             elif option == 2:
                 print(f"Overall average: {get_grades()}")
+else:
+    while option != 0:
+        print("1. View Schedule")
+        print("2. View assignments")
+        print("0. Quit")
+        option = int(input("Select a number: "))
+        if option == 1:
+            get_schedule(user_type)
+        elif option == 2:
+            show_assignment()
 
-# calculate student grade
-#CALL get_avg(student_id, period)
-#avg | assignment_type_id | period | course_type_id
+
 
 # teacher assignment
 #CALL get_assignments(course_id)

@@ -110,11 +110,3 @@ else:
             get_schedule(user_type)
         elif option == 2:
             show_assignment()
-
-
-
-# teacher assignment
-#CALL get_assignments(course_id)
-# assignment_id | assignment_name
-#CALL get_assignments_grade(assignment_id)
-# student_id | name | grade
